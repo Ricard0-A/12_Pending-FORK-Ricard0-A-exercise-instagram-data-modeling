@@ -14,7 +14,10 @@ class Follower(Base):
     user_from = relationship('User', foreign_keys=[user_from_id], backref='following')
     user_to = relationship('User', foreign_keys=[user_to_id], backref='followers')
 
-# Tabla User (información del usuario)
+# PD: Existe una relacion de muchos a muchos entre User y Follower 
+
+
+# Tabla User 
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, nullable=False)
