@@ -17,28 +17,28 @@ Base = declarative_base()
 
 
 
-# class Customer(Base):
-#     __tablename__ = 'customer'
-#     id = Column(Integer, nullable=False, primary_key=True)
-#     name = Column(String(55), nullable=True, unique=True)
-#     asociation = relationship('Asociation', back_populates='customer') # Relationship => Name_Class
+class Customer(Base):
+    __tablename__ = 'customer'
+    id = Column(Integer, nullable=False, primary_key=True)
+    name = Column(String(55), nullable=True, unique=True)
+    asociation = relationship('Asociation', back_populates='customer') # Relationship => Name_Class
 
 
-# class Product(Base):
-#     __tablename__ = 'products'
-#     id = Column(Integer, nullable=False, primary_key=True)
-#     name = Column(String(77), nullable=False)
-#     price = Column(Float, nullable=False, default=1000)
-#     asociation = relationship('Asociation', back_populates='product') 
+class Product(Base):
+    __tablename__ = 'products'
+    id = Column(Integer, nullable=False, primary_key=True)
+    name = Column(String(77), nullable=False)
+    price = Column(Float, nullable=False, default=1000)
+    asociation = relationship('Asociation', back_populates='product') 
     
 
-# class Asociation(Base):
-#     __tablename__ = 'customer_products'
-#     id = Column(Integer, nullable=False, primary_key=True)
-#     customer_id = Column(Integer, ForeignKey('customer.id')) # Foreignkey => tablename.id
-#     product_id  = Column(Integer, ForeignKey('products.id'))
-#     customer = relationship('Customer', back_populates='asociation') 
-#     product = relationship('Product', back_populates='asociation')
+class Asociation(Base):
+    __tablename__ = 'customer_products'
+    id = Column(Integer, nullable=False, primary_key=True)
+    customer_id = Column(Integer, ForeignKey('customer.id')) # Foreignkey => tablename.id
+    product_id  = Column(Integer, ForeignKey('products.id'))
+    customer = relationship('Customer', back_populates='asociation') 
+    product = relationship('Product', back_populates='asociation')
 
 
 # RELATIONSHIP MUCHOS A MUCHOS (V2) --------------------------------------------------------------------
@@ -70,25 +70,29 @@ class Product(Base):
 # RELATIONSHIP UNO A MUCHOS-------------------------------------------------------------------------------------
 
 # RESUMIENDO: "Un USER puede tener muchos POST, pero cada POST puede pertenecer solo a un USER"
-# Y por eso se usa el foreignkey en post, por que cada post va a pertenecer a cada usuario, digamos 
-# que el hijo deberia llevar la foreignkey, No el padre
+# Y POR ESO SE USA FOREIGN KEY en POST, por que cada post va a pertenecer a cada usuario, digamos 
+# que el hijo deberia llevar la foreignkey, No el padre osea que el padre no lleva foreign Key! 
+# Ojo que solo en el ambito de relacion uno a muchos
 
+# Integridad referencial: La clave foránea es como un "enlace" que conecta las dos 
+# tablas. Al colocarla en la tabla hija, aseguramos que los valores de esta clave
+# existan en la tabla padre. Y no alreves por que un usuario no va a pertenecer a cada post
 
-# class Users(Base):
-#     __tablename__ = 'users'
-#     id = Column(Integer, primary_key=True, nullable=False )
-#     name = Column(String(88), nullable=True, unique=True )
-#     email = Column(String(88), nullable=True, unique=True )
-#     post = relationship('Post', back_populates='user_id', userList=False) # Relationship siempre apunta al nombre de la otra Clase
-#     # Si userList estuviera en False, esto seria relacion uno a uno
+class Users(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, nullable=False )
+    name = Column(String(88), nullable=True, unique=True )
+    email = Column(String(88), nullable=True, unique=True )
+    post = relationship('Post', back_populates='user_id', userList=False) # Relationship siempre apunta al nombre de la otra Clase
+    # Si userList estuviera en False, esto seria relacion uno a uno
 
-# class Post(Base):
-#     __tablename__ = 'posts'
-#     id = Column(Integer, primary_key=True, nullable=False )
-#     title = Column(String(77), nullable=True, unique=False, )
-#     content = Column(String(99), nullable=True, unique=False)
-#     user_id = Column(Integer, ForeignKey('users.id')) #Foreignkey siempre apunta al tablename
-#     user = relationship('User', back_populates='post') #Backpopulates, siempre al otro atributo relationship de la otra clase
+class Post(Base):
+    __tablename__ = 'posts'
+    id = Column(Integer, primary_key=True, nullable=False )
+    title = Column(String(77), nullable=True, unique=False, )
+    content = Column(String(99), nullable=True, unique=False)
+    user_id = Column(Integer, ForeignKey('users.id')) #Foreignkey siempre apunta al tablename
+    user = relationship('User', back_populates='post') #Backpopulates, siempre al otro atributo relationship de la otra clase
 
 
 
@@ -99,7 +103,7 @@ class Product(Base):
 #     id = Column(Integer, primary_key=True)
 #     nombre = Column(String(80), nullable=True)
 
-        # ATENCION D:
+        
 #     # Le llamo child por que esa va a ser su relacion desde parents...con Child.
 #     #  
 #     # Pero el valor de back_populates, debe ser Parents, PORQUE me estoy refiriendo

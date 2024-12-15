@@ -8,7 +8,7 @@ Base = declarative_base()
 # Tabla Follower (relación muchos a muchos entre usuarios)
 class Follower(Base):
     __tablename__ = 'followers'
-    user_from_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    user_from_id = Column(Integer, ForeignKey('users.id'), primary_key=True) # foreign se conecta al id de users
     user_to_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
 
     user_from = relationship('User', foreign_keys=[user_from_id], backref='following')
@@ -58,7 +58,7 @@ class Comment(Base):
     post = relationship('Post', back_populates='comments')
 
 
-# Generando el diagrama gráfico
+# Rendering
 try:
     result = render_er(Base, 'diagram.png')
     print("Success! Check the diagram.png file")
